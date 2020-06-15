@@ -1,6 +1,8 @@
 package com.boublil.jwtspringsecurity.service;
 
 import com.boublil.jwtspringsecurity.dto.UserForm;
+import com.boublil.jwtspringsecurity.exception.ConfirmPasswordException;
+import com.boublil.jwtspringsecurity.exception.UserAlreadyExist;
 import com.boublil.jwtspringsecurity.model.AppRole;
 import com.boublil.jwtspringsecurity.model.AppUser;
 
@@ -10,7 +12,7 @@ public interface AccountService {
 
     List<AppUser> getAllUsers();
 
-    AppUser saveUser(UserForm userForm);
+    AppUser saveUser(UserForm userForm) throws UserAlreadyExist, ConfirmPasswordException;
 
     AppRole saveRole(AppRole role);
 

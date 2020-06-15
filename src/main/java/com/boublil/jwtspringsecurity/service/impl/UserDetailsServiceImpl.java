@@ -1,5 +1,6 @@
 package com.boublil.jwtspringsecurity.service.impl;
 
+import com.boublil.jwtspringsecurity.exception.UserNotFound;
 import com.boublil.jwtspringsecurity.model.AppUser;
 import com.boublil.jwtspringsecurity.service.AccountService;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,7 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         AppUser user = accountService.findUserByUserName(username);
-        if (user == null) throw new RuntimeException("User not found with this username " + username);
+        if (user == null) throw new UsernameNotFoundException("User not found with this username " + username);
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         user.getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getRole()));

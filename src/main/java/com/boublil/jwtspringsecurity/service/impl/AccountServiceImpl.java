@@ -1,6 +1,8 @@
 package com.boublil.jwtspringsecurity.service.impl;
 
 import com.boublil.jwtspringsecurity.dto.UserForm;
+import com.boublil.jwtspringsecurity.exception.ConfirmPasswordException;
+import com.boublil.jwtspringsecurity.exception.UserAlreadyExist;
 import com.boublil.jwtspringsecurity.model.AppRole;
 import com.boublil.jwtspringsecurity.model.AppUser;
 import com.boublil.jwtspringsecurity.repository.RoleRepository;
@@ -34,11 +36,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AppUser saveUser(UserForm userForm) {
+    public AppUser saveUser(UserForm userForm) throws UserAlreadyExist, ConfirmPasswordException {
         AppUser user = userRepository.findByUsername(userForm.getUsername());
-        if (user != null) throw new RuntimeException("This user already exist, try with an other username");
+        if (user != null) throw new UserAlreadyExist("This user already exist, try with an other username");
         if (!userForm.getPassword().equals(userForm.getConfirmedPassword()))
-            throw new RuntimeException("You must confirm your password");
+            throw new ConfirmPasswordException("You must confirm your password");
         AppUser appUser = new AppUser();
         appUser.setUsername(userForm.getUsername());
         appUser.setActived(true);

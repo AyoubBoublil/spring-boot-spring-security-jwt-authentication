@@ -1,5 +1,6 @@
 package com.boublil.jwtspringsecurity.service.impl;
 
+import com.boublil.jwtspringsecurity.exception.TaskAlreadyExist;
 import com.boublil.jwtspringsecurity.model.Task;
 import com.boublil.jwtspringsecurity.repository.TaskRepository;
 import com.boublil.jwtspringsecurity.service.TaskService;
@@ -23,7 +24,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task saveTask(Task task) {
+    public Task saveTask(Task task) throws TaskAlreadyExist {
+        if(taskRepository.findByTaskName(task.getTaskName()) != null) throw new TaskAlreadyExist("Task already exist");
         return taskRepository.save(task);
     }
 }
